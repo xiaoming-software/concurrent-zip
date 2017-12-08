@@ -3,4 +3,5 @@ Concurrent zip big string or uzip( 并发压缩解压大数据文本，只有在
 
 # 如何使用？
   压缩： ConcurrentZip.concurrentGZip(text, threadCount);// text 文本， threadCount 线程数
+  
   解压： ConcurrentZip.concurrentGUZip(compressedStr);
