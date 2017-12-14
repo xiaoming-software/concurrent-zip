@@ -6,12 +6,8 @@ package com.xiaoming.concurrent.zip;
 
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -130,21 +126,11 @@ public class ConcurrentZip {
 }
 
 /**
- * 线程池配置
+ * Thread pool
  * @author xiaoming
  * 2017年4月20日
  */
 class ExecutorUtil {  
-  
-    /** 最小线程数 */  
-    private static int corePoolSize = 8;
-    /** 最大线程数 */  
-    private static int maxPoolSize = 16;
-    /** 等待处理队列长度 */  
-    private static int queueCapacity = 32;  
-    /** 空闲时间 */
-    private static int keepAliveSeconds = 300;  
-    
     private static Executor executor = null;
     
     static{
@@ -154,17 +140,7 @@ class ExecutorUtil {
     }
     
 	private static Executor asyncConfig() {
-		BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>(queueCapacity);
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveSeconds, TimeUnit.SECONDS, taskQueue, new RejectedExecutionHandler() {
-
-			@Override
-			public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-				r.run();
-			}
-
-		});
-		
-		return executor;
+		return Executors.newCachedThreadPool();
 	} 
 	/**
 	 * 异步执行
